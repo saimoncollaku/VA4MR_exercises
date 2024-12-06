@@ -7,6 +7,10 @@ function p_reproj = reprojectPoints(P, M_tilde, K)
 %
 % p_reproj: [nx2] coordinates of the reprojected 2d points
 
-% TODO: Your code here
+P = cat(2, P, ones(height(P), 1));
+p_lambda = K * M_tilde * P';
+p_reproj = p_lambda(1:2,:) ./ p_lambda(3,:);
+p_reproj = p_reproj';
+
 end
 

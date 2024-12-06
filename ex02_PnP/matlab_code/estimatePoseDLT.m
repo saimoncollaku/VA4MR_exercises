@@ -17,21 +17,16 @@ assert(all(p_n(:,3) == ones(size(p, 1), 1)))
 p_n(:,3) = [];
 P = cat(2, P, ones(height(P), 1));
 
-    
-
 % Build the measurement matrix Q
 Q = [];
 for i = 1:height(P)
-    p_kron = cat(2,eye(2), p_n(i,:)');
+    p_kron = cat(2,eye(2), -p_n(i,:)');
     Q = cat(1, Q, kron(p_kron, P(i,:)));
 end
-
 
 % Solve for Q.M_tilde = 0 subject to the constraint ||M_tilde||=1
 [~, ~, V] = svd(Q);
 M_tilde =  V(:,12);
-M_temp = M_tilde;
-
 
 %% Extract [R|t] with the correct scale from M_tilde ~ [R|t]
 M_tilde = reshape(M_tilde,4, 3)';
@@ -47,13 +42,12 @@ R_tilde = U * V';
 
 % Normalization scheme using the Frobenius norm:
 % recover the unknown scale using the fact that R_tilde is a true rotation matrix
-alpha = norm(R_tilde) / norm(R);
+alpha = norm(R_tilde, "fro") / norm(R, "fro");
 
 % Build M_tilde with the corrected rotation and scale
 t_tilde = alpha * M_tilde(:, width(M_tilde));
 M_tilde = cat(2, R_tilde, t_tilde);
 assert(ismembertol(det(R_tilde), 1, 1e-5))
 
-%% 
 end
 
