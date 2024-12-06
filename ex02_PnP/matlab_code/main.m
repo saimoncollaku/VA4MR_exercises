@@ -13,8 +13,11 @@ p_W_corners = 0.01 * load('../data/p_W_corners.txt');
 num_corners = length(p_W_corners);
 
 % Load the 2D projected points (detected on the undistorted image)
-pts2d = 0.01 * load('../data/detected_corners.txt');
-num_corners = length(pts2d);
+pts2d = load('../data/detected_corners.txt');
+pts2d = pts2d(1,:);
+pts2d_n = reshape(pts2d, length(pts2d)/2,2);
+pts2d_n = cat(2, pts2d_n, ones(height(pts2d_n),1));
+
 
 
 %% Now that we have the 2D <-> 3D correspondences (pts2d+normalized <-> p_W_corners),
