@@ -30,22 +30,29 @@ end
 % Solve for Q.M_tilde = 0 subject to the constraint ||M_tilde||=1
 [~, ~, V] = svd(Q);
 M_tilde =  V(:,12);
+M_temp = M_tilde;
 
 
 %% Extract [R|t] with the correct scale from M_tilde ~ [R|t]
-
-% TODO: Your code here
+M_tilde = reshape(M_tilde,4, 3)';
+if M_tilde(3,4) < 0
+    M_tilde = -1 * M_tilde;
+end
 
 % Find the closest orthogonal matrix to R
 % https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
-% TODO: Your code here
+R = M_tilde(1:3,1:3);
+[U, ~, V] = svd(R);
+R_tilde = U * V';
 
 % Normalization scheme using the Frobenius norm:
 % recover the unknown scale using the fact that R_tilde is a true rotation matrix
-% TODO: Your code here
+alpha = norm(R_tilde) / norm(R);
 
 % Build M_tilde with the corrected rotation and scale
-% TODO: Your code here
+t_tilde = alpha * M_tilde(:, width(M_tilde));
+M_tilde = cat(2, R_tilde, t_tilde);
+assert(ismembertol(det(R_tilde), 1, 1e-5))
 
 %% 
 end
