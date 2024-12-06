@@ -15,15 +15,12 @@ num_corners = length(p_W_corners);
 % Load the 2D projected points (detected on the undistorted image)
 pts2d = load('../data/detected_corners.txt');
 pts2d = pts2d(1,:);
-pts2d_n = reshape(pts2d, length(pts2d)/2,2);
-pts2d_n = cat(2, pts2d_n, ones(height(pts2d_n),1));
-
+pts2d = reshape(pts2d, num_corners, 2);
 
 
 %% Now that we have the 2D <-> 3D correspondences (pts2d+normalized <-> p_W_corners),
 %% let's find the camera pose with respect to the world using DLT
-
-% TODO: Your code here
+M_tilde = estimatePoseDLT(pts2d, p_W_corners, K);
 
 %% Plot the original 2D points and the reprojected ones on the image
 

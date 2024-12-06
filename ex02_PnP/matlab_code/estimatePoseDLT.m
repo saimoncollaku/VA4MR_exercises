@@ -11,14 +11,26 @@ function M_tilde = estimatePoseDLT(p, P, K)
 %    frame to the camera frame
 
 % Convert 2D points to normalized coordinates
+p = cat(2, p, ones(height(p), 1));
+p_n = (K \ p')';
+assert(all(p_n(:,3) == ones(size(p, 1), 1)))
+p_n(:,3) = [];
+P = cat(2, P, ones(height(P), 1));
 
-% TODO: Your code here
+    
 
 % Build the measurement matrix Q
-% TODO: Your code here
+Q = [];
+for i = 1:height(P)
+    p_kron = cat(2,eye(2), p_n(i,:)');
+    Q = cat(1, Q, kron(p_kron, P(i,:)));
+end
+
 
 % Solve for Q.M_tilde = 0 subject to the constraint ||M_tilde||=1
-% TODO: Your code here
+[~, ~, V] = svd(Q);
+M_tilde =  V(:,12);
+
 
 %% Extract [R|t] with the correct scale from M_tilde ~ [R|t]
 
@@ -35,5 +47,6 @@ function M_tilde = estimatePoseDLT(p, P, K)
 % Build M_tilde with the corrected rotation and scale
 % TODO: Your code here
 
+%% 
 end
 
