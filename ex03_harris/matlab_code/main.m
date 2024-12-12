@@ -54,17 +54,18 @@ hold on;
 plot(keypoints(2, :), keypoints(1, :), 'rx', 'Linewidth', 2);
 
 %% Part 3 - Describe keypoints and show 16 strongest keypoint descriptors
-%{ 
-Remove this comment if you have completed the code until here
+
 descriptors = describeKeypoints(img, keypoints, descriptor_radius);
 figure(3);
 for i = 1:16
     subplot(4, 4, i);
     patch_size = 2 * descriptor_radius + 1;
     imagesc(uint8(reshape(descriptors(:,i), [patch_size patch_size])));
-    axis equal;
+    axis equal; 
     axis off;
 end
+%{ 
+Remove this comment if you have completed the code until here
 
 %% Part 4 - Match descriptors between first two images
 img_2 = imread('../data/000001.png');
