@@ -4,5 +4,16 @@ function keypoints = selectKeypoints(scores, num, r)
 
 % TODO: Your code here
 
+
+keypoints = [];
+for i = 1:num
+    [~, k] = max(scores(:));
+    [k_x, k_y] = ind2sub(size(scores),k);
+    keypoints = cat(2, keypoints, [k_x; k_y]);
+    s_x = max(k_x-r, 0) : min(k_x+r, size(scores, 1));
+    s_y = max(k_y-r, 0) : min(k_y+r, size(scores, 2));
+    scores(s_x, s_y) = 0;
+end
+
 end
 

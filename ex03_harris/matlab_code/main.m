@@ -19,8 +19,6 @@ img = imread('../data/000000.png');
 shi_tomasi_scores = shi_tomasi(img, corner_patch_size);
 assert(min(size(shi_tomasi_scores) == size(shi_tomasi_scores)));
 
-
-
 % Harris
 harris_scores = harris(img, corner_patch_size, harris_kappa);
 assert(min(size(harris_scores) == size(harris_scores)));
@@ -44,8 +42,7 @@ title('Harris Scores');
 daspect([1 1 1]);
 
 axis off;
-%{ 
-Remove this comment if you have completed the code until here
+
 
 %% Part 2 - Select keypoints
 
@@ -57,7 +54,8 @@ hold on;
 plot(keypoints(2, :), keypoints(1, :), 'rx', 'Linewidth', 2);
 
 %% Part 3 - Describe keypoints and show 16 strongest keypoint descriptors
-
+%{ 
+Remove this comment if you have completed the code until here
 descriptors = describeKeypoints(img, keypoints, descriptor_radius);
 figure(3);
 for i = 1:16
