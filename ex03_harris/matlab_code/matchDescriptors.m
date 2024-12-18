@@ -9,6 +9,20 @@ function matches = matchDescriptors(...
 % be equal.
 
 % TODO: Your code here
+warning('off','all')
+[ssd, matches] = pdist2(database_descriptors', query_descriptors', 'euclidean', 'Smallest', 1);
+warning('on','all')
+
+th = lambda * min(ssd);
+matches(ssd >= th) = 0;
+
+
+unique_matches = zeros(size(matches));
+[~,unique_match_idxs,~] = unique(matches, 'stable');
+unique_matches(unique_match_idxs) = matches(unique_match_idxs);
+matches = unique_matches;
+
+
 
 end
 

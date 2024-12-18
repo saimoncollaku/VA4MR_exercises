@@ -64,8 +64,7 @@ for i = 1:16
     axis equal; 
     axis off;
 end
-%{ 
-Remove this comment if you have completed the code until here
+
 
 %% Part 4 - Match descriptors between first two images
 img_2 = imread('../data/000001.png');
@@ -83,6 +82,7 @@ plot(keypoints_2(2, :), keypoints_2(1, :), 'rx', 'Linewidth', 2);
 plotMatches(matches, keypoints_2, keypoints);
 
 %% Part 5 - Match descriptors between all images
+
 figure(5);
 img_indices = 0:199;
 clear prev_desc
@@ -106,4 +106,3 @@ for i = img_indices
     hold off;
     pause(0.01);
 end
-%}
