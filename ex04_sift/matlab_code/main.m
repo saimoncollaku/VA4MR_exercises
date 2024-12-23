@@ -36,21 +36,7 @@ for img_idx = 1:2
 image_pyramid = computeImagePyramid(images{img_idx}, num_octaves);
 blurred_images = computeBlurredImages(image_pyramid, num_scales, sigma);
 DoGs = computeDoGs(blurred_images);
+kpt_locations(img_idx) = {extractKeypoints(DoGs, contrast_threshold)};
+[descriptors(img_idx), final_kpt_locations] = computeDescriptors(blurred_images, kpt_locations{img_idx});
+
 end
-
-%{ 
-Remove this comment if you have completed the code until here
-indexPairs = matchFeatures(descriptors{1}, descriptors{2},...
-    'MatchThreshold', 100, 'MaxRatio', 0.7, 'Unique', true);
-%}
-
-% TODO: Your code here
-
-%{ 
-Remove this comment if you have completed the code until here
-figure; ax = axes;
-showMatchedFeatures(images{1}, images{2}, kpt_matched_1, kpt_matched_2, ...
-    'montage','Parent',ax);
-title(ax, 'Candidate point matches');
-legend(ax, 'Matched points 1','Matched points 2');
-%}
