@@ -14,4 +14,22 @@ function F = fundamentalEightPoint(p1,p2)
 % Output:
 %  - F(3,3) : fundamental matrix
 
-% TODO: Your code here
+% Build the kronecker matrix
+Q = [];
+for i = 1 : width(p1)
+    Q_i = kron(p1(:, i), p2(:, i));
+    Q = cat(1, Q, Q_i');
+end
+
+% Find F with minimized det
+[~, ~, V] = svd(Q);
+vec_F = V(:, width(V));
+F = reshape(vec_F, [3, 3]);
+
+% Find F with enforced det = 0
+[U, S, V] = svd(F);
+S(3, 3) = 0;
+F = U * S * V';
+
+
+
