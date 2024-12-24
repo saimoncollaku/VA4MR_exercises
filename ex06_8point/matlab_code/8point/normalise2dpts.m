@@ -15,5 +15,19 @@ function [pts_tilda, T] = normalise2dpts(pts)
 %   T      -  The 3x3 transformation matrix, pts_tilda = T*pts
 %
 
-% TODO: Your code here
+pts = pts ./ pts(3, :);
+N = width(pts);
+mu = sum(pts, 2) / N;
+sigma = sum(vecnorm(pts - mu, 2)) / N;
+s = sqrt(2) / sigma;
+
+T = [s, 0, - s * mu(1);
+     0, s, - s * mu(2);
+     0, 0, 1];
+
+pts_tilda = [];
+
+for i = 1 : width(pts)
+    pts_t_i = T * pts(:, i);
+    pts_tilda = cat(2, pts_tilda, pts_t_i);
 end
