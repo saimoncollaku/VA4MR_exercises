@@ -12,6 +12,7 @@ function E = estimateEssentialMatrix(p1, p2, K1, K2)
 %  - E(3,3) : fundamental matrix
 %
 
-% TODO: Your code here
+F = fundamentalEightPoint_normalized(p1, p2);
+E = K2' * F * K1;
 
 end

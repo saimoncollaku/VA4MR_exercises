@@ -20,7 +20,53 @@ function [R,T] = disambiguateRelativePose(Rots,u3,points0_h,points1_h,K1,K2)
 %   to camera 2.
 %
 
-% TODO: Your code here
+M1 = K1 * eye(3, 4);
+best = 0;
 
+% Case 1
+current_R = Rots(:, :, 1);
+current_T = u3;
+current_count = return_n_pts_in_front(current_R, current_T, points0_h, points1_h, M1, K2);
+if  current_count > best
+    R = current_R;
+    T = current_T;
+    best = current_count;
+end
+
+% Case 2
+current_R = Rots(:, :, 1);
+current_T = -u3;
+current_count = return_n_pts_in_front(current_R, current_T, points0_h, points1_h, M1, K2);
+if  current_count > best
+    R = current_R;
+    T = current_T;
+    best = current_count;
+end
+
+% Case 3
+current_R = Rots(:, :, 2);
+current_T = u3;
+current_count = return_n_pts_in_front(current_R, current_T, points0_h, points1_h, M1, K2);
+if  current_count > best
+    R = current_R;
+    T = current_T;
+    best = current_count;
+end
+
+% Case 4
+current_R = Rots(:, :, 2);
+current_T = -u3;
+current_count = return_n_pts_in_front(current_R, current_T, points0_h, points1_h, M1, K2);
+if  current_count > best
+    R = current_R;
+    T = current_T;
+end
+
+end
+
+function count = return_n_pts_in_front(R, T, p1, p2, M1, K2)
+M2 = K2 * cat(2, R, T);
+P = linearTriangulation(p1, p2, M1, M2);
+count = nnz(P(3, :) > 0);
 end
 
