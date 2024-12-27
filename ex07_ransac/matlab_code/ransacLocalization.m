@@ -6,13 +6,15 @@ function [R_C_W, t_C_W, best_inlier_mask, max_num_inliers_history, num_iteration
 % best_inlier_mask should be 1xnum_matched (!!!) and contain, only for the
 %   matched keypoints (!!!), 0 if the match is an outlier, 1 otherwise.
 
-max_k = 2000;
+% max_k = 2000;
 best_inliers = -1;
 max_num_inliers_history = [];
 matched_query_keypoints = flipud(matched_query_keypoints);
 admissible_error = 10;
-
-for k = 1 : max_k
+k = inf;
+n_points = width(matched_query_keypoints);
+iterations = 1;
+while iterations < k
     [p, idx] = datasample(matched_query_keypoints, 6, 2, "Replace", false);
     P = corresponding_landmarks(:, idx);
 
@@ -25,8 +27,12 @@ for k = 1 : max_k
     if n_inliers > best_inliers
         best_inliers = n_inliers;
         best_inlier_mask = inliers_mask;
+        w = best_inliers / n_points;
+        w = max(0.05, w);
+        k = log(0.05) / log (1 - w ^ 6);
     end
     max_num_inliers_history = cat(2, max_num_inliers_history, best_inliers);
+    iterations = iterations + 1;
 end
 
 M = estimatePoseDLT(...
@@ -34,7 +40,7 @@ M = estimatePoseDLT(...
         corresponding_landmarks(:, best_inlier_mask>0)', K);
 R_C_W = M(:, 1:3);
 t_C_W = M(:, end);
-num_iteration_history = 1 : max_k;
+num_iteration_history = 1 : iterations;
 
 end
 
