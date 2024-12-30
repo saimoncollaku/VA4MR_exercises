@@ -1,8 +1,5 @@
 clear all;
 
-% Assumes reference solution of exercise 1 at this location (!).
-addpath('../../01_camera_projection/code');
-
 hidden_state = load('../data/hidden_state.txt');
 observations = load('../data/observations.txt');
 num_frames = 150;
@@ -35,7 +32,8 @@ axis equal;
 axis([-5 95 -30 10]);
 legend('Ground truth', 'Estimate', 'Location', 'SouthWest');
 
-%% Align estimate to ground truth.
+%% Align estimate to ground truth. 
+%{
 p_G_C = alignEstimateToGroundTruth(...
     pp_G_C, p_V_C);
 
@@ -49,6 +47,7 @@ axis equal;
 axis([-5 95 -30 10]);
 legend('Ground truth', 'Original estimate', 'Aligned estimate', ...
     'Location', 'SouthWest');
+%}
 
 %% Plot the state before bundle adjustment
 figure(1);
@@ -63,6 +62,7 @@ plotMap(cropped_hidden_state, cropped_observations, [0 20 -5 5]);
 title('Cropped problem after bundle adjustment');
 
 %% Full problem
+%{
 figure(1);
 plotMap(hidden_state, observations, [0 40 -10 10]);
 title('Full problem before bundle adjustment');
@@ -93,3 +93,4 @@ axis equal;
 axis([-5 95 -30 10]);
 legend('Ground truth', 'Original estimate','Optimized estimate', ...
     'Location', 'SouthWest');
+%}

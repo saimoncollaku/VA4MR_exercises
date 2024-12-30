@@ -9,7 +9,7 @@ function p_G_C = alignEstimateToGroundTruth(...
 % Init
 homo_init = eye(4);
 initial_guess = [HomogMatrix2twist(homo_init); 1];
-options = optimoptions('lsqnonlin', 'TolFun', 1e-12, 'MaxIterations', 1000, 'Display', 'iter');
+options = optimoptions('lsqnonlin', 'TolFun', 1e-12, 'MaxIterations', 1000);
 error_function = @(x) alignmentError(x, pp_G_C, p_V_C); 
 
 % Result
